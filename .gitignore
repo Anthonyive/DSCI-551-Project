@@ -123,3 +123,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# WM API keys
+WM_IO_my_rsa_key_pair 
+WM_IO_private_key.pem 
+WM_IO_public_key.pem
