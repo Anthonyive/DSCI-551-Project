@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "b3fda8dee84d2c79cbec14d97ca0b74ed779f51aa008415ae0a840b250cad04a"
+            "sha256": "69e4c489e8d28d7164c80394e41b2d3aa5ebadbc4bb63ab73f65f6e552b5f26d"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -45,6 +45,13 @@
             ],
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'",
             "version": "==4.0.0"
+        },
+        "cql": {
+            "hashes": [
+                "sha256:7857c16d8aab7b736ab677d1016ef8513dedb64097214ad3a50a6c550cb7d6e0"
+            ],
+            "index": "pypi",
+            "version": "==1.4.0"
         },
         "decorator": {
             "hashes": [
@@ -251,6 +258,12 @@
             ],
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
             "version": "==1.15.0"
+        },
+        "thrift": {
+            "hashes": [
+                "sha256:9af1c86bf73433afc6010ed376a6c6aca2b54099cc0d61895f640870a9ae7d89"
+            ],
+            "version": "==0.13.0"
         },
         "tornado": {
             "hashes": [
