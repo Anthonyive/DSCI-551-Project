@@ -8,6 +8,7 @@ ipykernel = "*"
 requests = "*"
 pycryptodome = "*"
 cql = "*"
+cassandra-driver = "*"
 
 [dev-packages]
 
