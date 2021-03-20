@@ -9,6 +9,8 @@ requests = "*"
 pycryptodome = "*"
 cql = "*"
 cassandra-driver = "*"
+sqlalchemy = "*"
+mysqlclient = "*"
 
 [dev-packages]
 
