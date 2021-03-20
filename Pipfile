@@ -11,10 +11,10 @@ cql = "*"
 cassandra-driver = "*"
 sqlalchemy = "*"
 mysqlclient = "*"
+pymongo = "*"
+dnspython = "*"
 
 [dev-packages]
 
 [requires]
 python_version = "3.8"
-
-
