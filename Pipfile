@@ -13,6 +13,8 @@ sqlalchemy = "*"
 mysqlclient = "*"
 pymongo = "*"
 dnspython = "*"
+flask = "*"
+flask-pymongo = "*"
 
 [dev-packages]
 
