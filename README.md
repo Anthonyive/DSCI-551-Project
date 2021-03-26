@@ -1,6 +1,6 @@
 # DSCI-551-Project
 
-### Notes
+## Notes
 
 1. Python virtual environment has been set up using `pipenv`. You need `pipenv` installed ([learn more](https://pipenv-fork.readthedocs.io/en/latest/)). Then run:
 
@@ -24,8 +24,3 @@
    WM_IO_private_key.pem
    WM_IO_public_key.pem
    ```
-
-   
-
-
-

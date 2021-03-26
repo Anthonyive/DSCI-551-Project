@@ -44,7 +44,17 @@
       </div>
     </main>
 
-    <!-- {{ db.taxonomy.find_one({"name": "Personal Care"}) }} -->
+    {% set 
+      docs = db.products.find({"$text": {
+            "$search": "RED CHILE PASTE"
+          }
+        }) 
+    %}
+
+    {% for i in docs %}
+      {{ i }}
+    {% endfor %}
+
 
     <!-- Bottom navbar -->
     <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark">
