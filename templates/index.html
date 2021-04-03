@@ -47,21 +47,11 @@
     </main>
 
     <!-- main body -->
-    <script>
-      $(document).ready(function(){
-        $("#livebox").on("input", function(e){
-          query = $("#livebox").val()
-          $.ajax({
-            method: "post",
-            url: "/livesearch",
-            data: {query:query},
-            success: function(res){
-              console.log(res)
-            }
-          })
-        });
-      })
-    </script>
+
+    <div id="search-results"></div>
+
+    
+
     <!-- main body -->
 
 
@@ -85,4 +75,27 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
     
   </body>
+  <!-- for livesearch functionality -->
+  <script>
+    $(document).ready(function(){
+      $("#livebox").on("input", function(e){
+        query = $("#livebox").val();
+        $("#search-results").empty();
+        $.ajax({
+          method: "post",
+          url: "/livesearch",
+          data: {query:query},
+          success:function(res){
+            var data = "<ul>";
+            $.each(JSON.parse(res), function(index,value){
+              data += "<li>" + value.name + "</li>";
+            });
+            data += "</ul>";
+            $("#search-results").html(data);
+          }
+        })
+      });
+    })
+  </script>
+
 </html>
