@@ -88,7 +88,7 @@
           success:function(res){
             var data = "<ul>";
             $.each(JSON.parse(res), function(index,value){
-              data += "<li>" + value.name + "</li>";
+              data += "<li>" + value.shortDescription + "</li>";
             });
             data += "</ul>";
             $("#search-results").html(data);
