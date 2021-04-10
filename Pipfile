@@ -9,10 +9,13 @@ requests = "*"
 pycryptodome = "*"
 cql = "*"
 cassandra-driver = "*"
+sqlalchemy = "*"
+mysqlclient = "*"
+dnspython = "*"
+flask = "*"
+flask-pymongo = "*"
 
 [dev-packages]
 
 [requires]
 python_version = "3.8"
-
-

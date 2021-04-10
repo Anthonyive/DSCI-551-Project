@@ -129,3 +129,4 @@ WM_IO_my_rsa_key_pair
 WM_IO_private_key.pem 
 WM_IO_public_key.pem
 **/.DS_Store
+**/Downloads/
