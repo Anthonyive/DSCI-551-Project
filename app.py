@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from flask_pymongo import PyMongo
 from bson.json_util import loads, dumps
+import json
 import re
 
 app = Flask(__name__)
@@ -12,10 +13,18 @@ def index():
     return render_template('index.html')
 
 @app.route('/livesearch', methods=["POST", "GET"])
-def livesearch():
-    query = request.form.get("query")
-    result = mongo.db.products.find( { "$text": {"$search": query} } ).limit(5)
-    return jsonify(dumps(result))
+def live_search():
+    query = request.form.get("keyword")
+    kind = request.form.get("kind")
+    print(query, kind)
+    if kind == 'products':
+        result = mongo.db.products.find( { "$text": {"$search": query} } ).limit(5)
+    else:
+        result = mongo.db.products.find( { "$text": {"$search": query} } ).limit(5)
+    
+    data = dumps(result)
+    print(type(data))
+    return jsonify(items=json.loads(data))
 
 if __name__ == '__main__':
     app.run(debug=True)

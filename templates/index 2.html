@@ -25,8 +25,8 @@
             <!-- Search bar -->
             <div class="container-fluid col-md">
               <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="livebox" onkeydown="doSearch()">
-                <button class="btn btn-outline-success" type="button" onclick="doSearch()" id="search-button">Search</button>
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="livebox">
+                <button class="btn btn-outline-success" type="button" onclick="doSearch()">Search</button>
               </form>
             </div>
 
@@ -115,22 +115,20 @@
     <script src="{{ url_for('static', filename='bootstrap5/js/bootstrap.min.js') }}" ></script>
   {% raw %}
   <script id="results-template" type="text/x-handlebars-template">
-    <div class="container p-4">
-      <div class="row">
-          {{#each items}}
-          <div class="col-md-3 mb-3">
-              <div class="card">
-                  <a href="{{ productUrl }}"><img src="{{ largeImage }}" alt="" class="card-img-top"></a>
-                  <div class="card-body">
-                      <h4><a href="{{ productUrl }}">{{ truncate name 35 }}</a></h4>
-                      <p>{{ truncate shortDescription 128 }}</p>
-                      <p><a href="{{ productUrl }}" class="btn btn-primary">View This Product</a></p>
-                  </div>
-              </div>
-              <div class="placeHolder"></div>
-          </div>
-          {{/each}}
-      </div>
+    <div class="row">
+        {{#each items}}
+        <div class="col-md-4">
+            <div class="card">
+                <a href="{{ productUrl }}"><img src="{{ largeImage }}" alt="" class="card-img-top"></a>
+                <div class="card-body">
+                    <h4><a href="{{ productUrl }}">{{ truncate name 35 }}</a></h4>
+                    <p>{{ truncate shortDescription 128 }}</p>
+                    <p><a href="{{ productUrl }}" class="btn btn-primary">View This Product</a></p>
+                </div>
+            </div>
+            <div class="placeHolder"></div>
+        </div>
+        {{/each}}
     </div>
 </script>
 {% endraw %}
@@ -202,16 +200,6 @@
         })
       });
       */
-    })
-  </script>
-
-  <!-- enter to search -->
-  <script>
-    $("form").keypress(function(e){
-        if(e.keyCode == 13) {
-            e.preventDefault();
-            return false;
-        }
     })
   </script>
 
