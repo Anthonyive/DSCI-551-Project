@@ -19,8 +19,8 @@
             <!-- Search bar -->
             <div class="container-fluid col-md">
               <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="livebox">
-                <button class="btn btn-outline-success" type="submit">Search</button>
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="livebox" onkeydown="doSearch()">
+                <button class="btn btn-outline-success" type="button" onclick="doSearch()" id="search-button">Search</button>
               </form>
             </div>
 
@@ -76,6 +76,59 @@
     
   </body>
   <!-- for livesearch functionality -->
+  <script> /*
+    $(document).ready(function(){
+      $("#livebox").on("input", function(e){
+        query = $("#livebox").val();
+        $("#search-results").empty();
+        $.ajax({
+          method: "post",
+          url: "/livesearch",
+          data: {query:query},
+          success:function(res){
+            var data = "<ul>";
+            $.each(JSON.parse(res), function(index,value){
+              data += "<li>" + value.name + "</li>";
+            });
+            data += "</ul>";
+            $("#search-results").html(data);
+          }
+        })
+      });
+    })
+    */
+  </script>
+
+  <!-- Handlebars js -->
+  <script src="{{ url_for('static', filename='handlebars/handlebars.min.js' ) }}" ></script>
+  <!-- jQuery -->
+    <script src="{{ url_for('static', filename='jquery/jquery.min.js' ) }}" ></script>
+  <!-- POPPER -->
+    <script src="{{ url_for('static', filename='popper/popper.min.js' ) }}" ></script>
+  <!-- Bootstrap script -->
+    <script src="{{ url_for('static', filename='bootstrap5/js/bootstrap.min.js') }}" ></script>
+  {% raw %}
+  <script id="results-template" type="text/x-handlebars-template">
+    <div class="container p-4">
+      <div class="row">
+          {{#each items}}
+          <div class="col-md-3 mb-3">
+              <div class="card">
+                  <a href="{{ productUrl }}"><img src="{{ largeImage }}" alt="" class="card-img-top"></a>
+                  <div class="card-body">
+                      <h4><a href="{{ productUrl }}">{{ truncate name 35 }}</a></h4>
+                      <p>{{ truncate shortDescription 128 }}</p>
+                      <p><a href="{{ productUrl }}" class="btn btn-primary">View This Product</a></p>
+                  </div>
+              </div>
+              <div class="placeHolder"></div>
+          </div>
+          {{/each}}
+      </div>
+    </div>
+</script>
+{% endraw %}
+  <!-- for livesearch functionality -->
   <script>
     $(document).ready(function(){
       $("#livebox").on("input", function(e){
@@ -95,6 +148,16 @@
           }
         })
       });
+    })
+  </script>
+
+  <!-- enter to search -->
+  <script>
+    $("form").keypress(function(e){
+        if(e.keyCode == 13) {
+            e.preventDefault();
+            return false;
+        }
     })
   </script>
 
