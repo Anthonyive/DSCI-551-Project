@@ -26,25 +26,110 @@
             <div class="container-fluid col-md">
               <form class="d-flex">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="livebox" onkeydown="doSearch()">
+                
+                <div class="container">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="card-header">
+                        Filtering Options
+                      </div>
+
+                      <!-- 97 cents shipping -->
+                      <div class="form-check" method="POST", action="/live_search">
+                        <input class="form-check-input" type="checkbox" value="" name="ninetySevenCentShipping">
+                        <label class="form-check-label" for="ninetySevenCentShipping">
+                          97&#162; Shipping
+                        </label>
+                      </div>
+      
+                      <!-- marketplace -->
+                      <div class="form-check" method="POST", action="/live_search">
+                        <input class="form-check-input" type="checkbox" value="" name="marketplace">
+                        <label class="form-check-label" for="marketplace">
+                          Marketplace
+                        </label>
+                      </div>
+      
+                      <!-- ship to store -->
+                      <div class="form-check" method="POST", action="/live_search">
+                        <input class="form-check-input" type="checkbox" value="" name="shipToStore">
+                        <label class="form-check-label" for="shipToStore">
+                          Ship to store
+                        </label>
+                      </div>
+      
+                      <!-- free ship to store -->
+                      <div class="form-check" method="POST", action="/live_search">
+                        <input class="form-check-input" type="checkbox" value="" name="freeShipToStore">
+                        <label class="form-check-label" for="freeShipToStore">
+                          Free ship To store
+                        </label>
+                      </div>
+      
+                      <!-- bundle -->
+                      <div class="form-check" method="POST", action="/live_search">
+                        <input class="form-check-input" type="checkbox" value="" name="bundle">
+                        <label class="form-check-label" for="bundle">
+                          Bundle
+                        </label>
+                      </div>
+      
+                      <!-- clearance -->
+                      <div class="form-check" method="POST", action="/live_search">
+                        <input class="form-check-input" type="checkbox" value="" name="clearance">
+                        <label class="form-check-label" for="clearance">
+                          Clearance
+                        </label>
+                      </div>
+      
+                      <!-- preOrder -->
+                      <div class="form-check" method="POST", action="/live_search">
+                        <input class="form-check-input" type="checkbox" value="" name="preOrder">
+                        <label class="form-check-label" for="preOrder">
+                          Pre-order
+                        </label>
+                      </div>
+      
+                      <!-- freeShippingOver35Dollars -->
+                      <div class="form-check" method="POST", action="/live_search">
+                        <input class="form-check-input" type="checkbox" value="" name="freeShippingOver35Dollars">
+                        <label class="form-check-label" for="freeShippingOver35Dollars">
+                          Free shipping over 35 dollars
+                        </label>
+                      </div>
+      
+                      <!-- availableOnline -->
+                      <div class="form-check" method="POST", action="/live_search">
+                        <input class="form-check-input" type="checkbox" value="" name="availableOnline">
+                        <label class="form-check-label" for="availableOnline">
+                          Available online
+                        </label>
+                      </div>
+                    </div>
+      
+                    <!-- min max input -->
+                    <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <div class="input-group-text" id="btnGroupAddon">min</div>
+                        </div>
+                        <input type="text" class="form-control" placeholder="min MSRP">
+                      </div>
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <div class="input-group-text" id="btnGroupAddon">max</div>
+                        </div>
+                        <input type="text" class="form-control" placeholder="max MSRP">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <button class="btn btn-outline-success" type="button" onclick="doSearch()" id="search-button">Search</button>
+                  
               </form>
             </div>
 
-            <!-- Radio buttons -->
-            <div class="col-md">
-              <div class="form-check">
-                <label class="form-check-label">
-                  <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2" checked>
-                  Products
-                </label>
-              </div>
-
-              <div class="form-check">
-                <label class="form-check-label">
-                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1">
-                  Taxonomy
-                </label>
-              </div>
           </div>
         </div>
         
@@ -115,23 +200,33 @@
     <script src="{{ url_for('static', filename='bootstrap5/js/bootstrap.min.js') }}" ></script>
   {% raw %}
   <script id="results-template" type="text/x-handlebars-template">
-    <div class="container p-4">
+    <div class="container">
       <div class="row">
-          {{#each items}}
-          <div class="col-md-3 mb-3">
-              <div class="card">
-                  <a href="{{ productUrl }}"><img src="{{ largeImage }}" alt="" class="card-img-top"></a>
-                  <div class="card-body">
-                      <h4><a href="{{ productUrl }}">{{ truncate name 35 }}</a></h4>
-                      <p>{{ truncate shortDescription 128 }}</p>
-                      <p><a href="{{ productUrl }}" class="btn btn-primary">View This Product</a></p>
-                  </div>
-              </div>
-              <div class="placeHolder"></div>
+
+        <!-- product cards -->
+        <div class="col">
+          <div class="container p-4">
+            <div class="row">
+                {{#each items}}
+                <div class="col-md-3 mb-3">
+                    <div class="card">
+                        <a href="{{ productUrl }}"><img src="{{ largeImage }}" alt="" class="card-img-top"></a>
+                        <div class="card-body">
+                            <h4><a href="{{ productUrl }}">{{ truncate name 35 }}</a></h4>
+                            <p>{{ truncate shortDescription 128 }}</p>
+                            <p><a href="{{ productUrl }}" class="btn btn-primary">View This Product</a></p>
+                        </div>
+                    </div>
+                    <div class="placeHolder"></div>
+                </div>
+                {{/each}}
+            </div>
           </div>
-          {{/each}}
+        </div>
       </div>
     </div>
+    
+    
 </script>
 {% endraw %}
   <!-- for livesearch functionality -->
@@ -161,14 +256,20 @@
           resultsDisplayArea.innerHTML = ''
         let keyword = searchKeywordsInput.value;
         let kind = 'products';
-        if (radio1.checked){
-          kind = 'taxonomy'
-        }
         $.ajax({
             url: '{{ url_for("live_search") }}',
             data: {
                 keyword: keyword,
                 kind: kind,
+                ninetySevenCentShipping: ninetySevenCentShipping,
+                marketplace: marketplace,
+                shipToStore: shipToStore,
+                freeShipToStore: freeShipToStore,
+                bundle: bundle,
+                clearance: clearance,
+                preOrder: preOrder,
+                freeShippingOver35Dollars: freeShippingOver35Dollars,
+                availableOnline: availableOnline,
             },
             type: 'post',
             success: function ( res ){
