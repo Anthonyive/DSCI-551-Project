@@ -1,8 +1,7 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, Blueprint
 from flask_pymongo import PyMongo
 from bson.json_util import loads, dumps
-import json
-import re
+import json, re
 
 app = Flask(__name__)
 app.config['MONGO_URI'] = "mongodb+srv://DSCI551:Dsci551@cluster0.ydii8.mongodb.net/Walmart?retryWrites=true&w=majority"

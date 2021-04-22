@@ -14,6 +14,8 @@
       }
     </style>
     <link rel="stylesheet" href="{{ url_for('static', filename="css/main.css") }}">
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
   </head>
   <body>
     <main class="container">
@@ -22,14 +24,14 @@
         <p class="lead">Type in a Walmart product and see if it's in our database.</p>
 
         <p>We've used Spark to filter out not in stock and not available online products beforehand. </p>
-        <p>There are currently {{ docCount }} products with {{ catCount }} distinct categories in our database.</p>
+        <p>There are currently <mark>{{ docCount }}</mark> products with <mark>{{ catCount }}</mark> distinct categories in our database.</p>
 
         <div class="container">
           <div class="row">
             <!-- Search bar -->
             <div class="container-fluid col-md">
               <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="livebox" onkeydown="doSearch()">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="livebox">
                 <button class="btn btn-outline-success" type="button" onclick="doSearch()" id="search-button">Search</button>
                   
               </form>
@@ -103,6 +105,26 @@
     <script src="{{ url_for('static', filename='popper/popper.min.js' ) }}" ></script>
   <!-- Bootstrap script -->
     <script src="{{ url_for('static', filename='bootstrap5/js/bootstrap.min.js') }}" ></script>
+
+    <script>
+      Handlebars.registerHelper("_toFloat", function(rating_str){
+        return parseFloat(rating_str).toFixed(1);
+      });
+      Handlebars.registerHelper("stars", function(rating_str) {
+          var html = '';
+          var rating = parseFloat(rating_str)
+          var n_solid_star = Math.floor(rating)
+          var n_half_star = Math.round(rating) - n_solid_star
+          var n_empty_star = 5 - n_solid_star - n_half_star
+          for(var i = 0; i < n_solid_star; ++i)
+            html += "<i class='fas fa-star'></i>";
+          for(var i = 0; i < n_half_star; ++i)
+            html += "<i class='fas fa-star-half-alt'></i>";
+          for(var i = 0; i < n_empty_star; ++i)
+            html += "<i class='far fa-star'></i>";
+          return new Handlebars.SafeString(html);
+      });
+    </script>
   {% raw %}
     <script id="results-template" type="text/x-handlebars-template">
       <div class="container">
@@ -128,7 +150,8 @@
                   <!-- <img class="" src="http://via.placeholder.com/300x180" alt="Card image cap"> -->
                 </div>
                 <div class="card-body">
-                  <h4 class="card-title">
+                  <!-- title -->
+                  <h5 class="card-title">
                     {{#if attributes.productUrlText}}
                       <a href="https://www.walmart.com{{attributes.productUrlText}}">
                         {{ truncate name 35 }}
@@ -136,17 +159,53 @@
                     {{else}}
                       {{ truncate name 35 }}
                     {{/if}}
-                  </h4>
-                  <p class="card-text">{{ truncate shortDescription 128 }}</p>
+                  </h5>
+
+                  <!-- star rating -->
+                  {{#if customerRating}}
+                    <span style="color: gold;">
+                      {{stars customerRating}}
+                    </span> ({{_toFloat customerRating}} out of 5) [{{numReviews}} reviews]
+                  {{/if}}
+
+                  <!-- brand name -->
+                  {{#if brandName}}
+                  <p>
+                    <i>Brand name</i>: {{brandName}}
+                  </p>
+                  {{/if}}
+
+                  <!-- description -->
+                  <p class="card-text">{{ truncate shortDescription 256 }}</p>
+
+                  <!-- price -->
+                  {{#if msrp}}
+                    <h4>
+                      <sup>$</sup>{{salePrice}}
+                      <span style="font-size: 15px;" class="text-muted">
+                        <strike>
+                          ${{msrp}}
+                        </strike>
+                      </span>
+                    </h4>
+                  {{else}}
+                    <h4>
+                      <sup>$</sup>{{salePrice}}
+                    </h4>
+                  {{/if}}
+
+                  <!-- button -->
                   {{#if attributes.productUrlText}}
                     <a href="https://www.walmart.com{{attributes.productUrlText}}" class="btn btn-primary">
                       View product on Walmart.com
                     </a>
                   {{else}}
                     <button type="button" class="btn btn-primary" disabled>
-                      Not available
+                      Walmart link not available
                     </button>
                   {{/if}}
+
+                  
                 </div>
               </div>
               <div class="placeHolder"></div>
