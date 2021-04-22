@@ -23,7 +23,9 @@
         <h1>Search a Product in our Database</h1>
         <p class="lead">Type in a Walmart product and see if it's in our database.</p>
 
-        <p>We've used Spark to filter out not in stock and not available online products beforehand. </p>
+        <p>
+          Due to storage and indexing constraints, the database uses the first 6000 pages on <a href="https://www.walmart.com">Walmart.com</a>. Then, we used Spark to filter out not in stock and not available online products beforehand. 
+        </p>
         <p>There are currently <mark>{{ docCount }}</mark> products with <mark>{{ catCount }}</mark> distinct categories in our database.</p>
 
         <div class="container">
@@ -57,16 +59,10 @@
     <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">Walmart Search UI</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
       </div>
 
       <div class="container-fluid d-flex flex-row-reverse">
         <a class="navbar-brand" href="https://github.com/Anthonyive/DSCI-551-Project.git">Spring 2021 - DSCI 551 Project</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
       </div>
     </nav>
     <!-- Bootstrap script -->
@@ -154,10 +150,10 @@
                   <h5 class="card-title">
                     {{#if attributes.productUrlText}}
                       <a href="https://www.walmart.com{{attributes.productUrlText}}">
-                        {{ truncate name 35 }}
+                        {{ name }}
                       </a>
                     {{else}}
-                      {{ truncate name 35 }}
+                      {{ name }}
                     {{/if}}
                   </h5>
 
@@ -166,11 +162,13 @@
                     <span style="color: gold;">
                       {{stars customerRating}}
                     </span> ({{_toFloat customerRating}} out of 5) [{{numReviews}} reviews]
+                  {{else}}
+                    No star ratings
                   {{/if}}
 
                   <!-- brand name -->
                   {{#if brandName}}
-                  <p>
+                  <p class="text-muted">
                     <i>Brand name</i>: {{brandName}}
                   </p>
                   {{/if}}
@@ -194,14 +192,33 @@
                     </h4>
                   {{/if}}
 
+                  <!-- shipping -->
+                  {{#if ninetySevenCentShipping}}
+                    <p style="margin: 2px 0;">
+                      <i class="fas fa-shipping-fast"></i> {{98 shipping available}}
+                    </p>
+                  {{/if}}
+
+                  {{#if standardShipRate}}
+                    <p style="margin: 2px 0;">
+                      <span style="color: tomato;"><i class="fas fa-dolly"></i></span> Standard ship rate: <sup>$</sup>{{standardShipRate}}
+                    </p>
+                  {{/if}}
+
+                  {{#if twoThreeDayShippingRate}}
+                    <p style="margin: 2px 0;">
+                      <span style="color: dodgerblue;"><i class="fas fa-truck"></i></span> Two or three day shipping rate: <sup>$</sup>{{twoThreeDayShippingRate}}
+                    </p>
+                  {{/if}}
+
                   <!-- button -->
                   {{#if attributes.productUrlText}}
                     <a href="https://www.walmart.com{{attributes.productUrlText}}" class="btn btn-primary">
-                      View product on Walmart.com
+                      View product on Walmart.com <i class="fas fa-external-link-alt"></i>
                     </a>
                   {{else}}
                     <button type="button" class="btn btn-primary" disabled>
-                      Walmart link not available
+                      Walmart link not available <i class="fas fa-unlink"></i>
                     </button>
                   {{/if}}
 
