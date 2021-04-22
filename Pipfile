@@ -14,6 +14,9 @@ mysqlclient = "*"
 dnspython = "*"
 flask = "*"
 flask-pymongo = "*"
+py4j = "*"
+flask-paginate = "*"
+flask-mongoengine = "*"
 pandas = "*"
 
 [dev-packages]

@@ -1,0 +1,9 @@
+.card-horizontal {
+    display: flex;
+    flex: 1 1 auto;
+}
+
+body { padding-bottom: 100px; }
+
+sup { vertical-align: top; position: relative; top: 0.8em; }
+

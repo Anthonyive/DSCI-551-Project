@@ -13,6 +13,9 @@
         height: 5px;
       }
     </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename="css/main.css") }}">
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
   </head>
   <body>
     <main class="container">
@@ -20,111 +23,17 @@
         <h1>Search a Product in our Database</h1>
         <p class="lead">Type in a Walmart product and see if it's in our database.</p>
 
+        <p>
+          Due to storage and indexing constraints, the database uses the first 6000 pages on <a href="https://www.walmart.com">Walmart.com</a>. Then, we used Spark to filter out not in stock and not available online products beforehand. 
+        </p>
+        <p>There are currently <mark>{{ docCount }}</mark> products with <mark>{{ catCount }}</mark> distinct categories in our database.</p>
+
         <div class="container">
           <div class="row">
             <!-- Search bar -->
             <div class="container-fluid col-md">
               <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="livebox" onkeydown="doSearch()">
-                
-                <div class="container">
-                  <div class="card">
-                    <div class="card-body">
-                      <div class="card-header">
-                        Filtering Options
-                      </div>
-
-                      <!-- 97 cents shipping -->
-                      <div class="form-check" method="POST", action="/live_search">
-                        <input class="form-check-input" type="checkbox" value="" name="ninetySevenCentShipping">
-                        <label class="form-check-label" for="ninetySevenCentShipping">
-                          97&#162; Shipping
-                        </label>
-                      </div>
-      
-                      <!-- marketplace -->
-                      <div class="form-check" method="POST", action="/live_search">
-                        <input class="form-check-input" type="checkbox" value="" name="marketplace">
-                        <label class="form-check-label" for="marketplace">
-                          Marketplace
-                        </label>
-                      </div>
-      
-                      <!-- ship to store -->
-                      <div class="form-check" method="POST", action="/live_search">
-                        <input class="form-check-input" type="checkbox" value="" name="shipToStore">
-                        <label class="form-check-label" for="shipToStore">
-                          Ship to store
-                        </label>
-                      </div>
-      
-                      <!-- free ship to store -->
-                      <div class="form-check" method="POST", action="/live_search">
-                        <input class="form-check-input" type="checkbox" value="" name="freeShipToStore">
-                        <label class="form-check-label" for="freeShipToStore">
-                          Free ship To store
-                        </label>
-                      </div>
-      
-                      <!-- bundle -->
-                      <div class="form-check" method="POST", action="/live_search">
-                        <input class="form-check-input" type="checkbox" value="" name="bundle">
-                        <label class="form-check-label" for="bundle">
-                          Bundle
-                        </label>
-                      </div>
-      
-                      <!-- clearance -->
-                      <div class="form-check" method="POST", action="/live_search">
-                        <input class="form-check-input" type="checkbox" value="" name="clearance">
-                        <label class="form-check-label" for="clearance">
-                          Clearance
-                        </label>
-                      </div>
-      
-                      <!-- preOrder -->
-                      <div class="form-check" method="POST", action="/live_search">
-                        <input class="form-check-input" type="checkbox" value="" name="preOrder">
-                        <label class="form-check-label" for="preOrder">
-                          Pre-order
-                        </label>
-                      </div>
-      
-                      <!-- freeShippingOver35Dollars -->
-                      <div class="form-check" method="POST", action="/live_search">
-                        <input class="form-check-input" type="checkbox" value="" name="freeShippingOver35Dollars">
-                        <label class="form-check-label" for="freeShippingOver35Dollars">
-                          Free shipping over 35 dollars
-                        </label>
-                      </div>
-      
-                      <!-- availableOnline -->
-                      <div class="form-check" method="POST", action="/live_search">
-                        <input class="form-check-input" type="checkbox" value="" name="availableOnline">
-                        <label class="form-check-label" for="availableOnline">
-                          Available online
-                        </label>
-                      </div>
-                    </div>
-      
-                    <!-- min max input -->
-                    <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
-                      <div class="input-group">
-                        <div class="input-group-prepend">
-                          <div class="input-group-text" id="btnGroupAddon">min</div>
-                        </div>
-                        <input type="text" class="form-control" placeholder="min MSRP">
-                      </div>
-                      <div class="input-group">
-                        <div class="input-group-prepend">
-                          <div class="input-group-text" id="btnGroupAddon">max</div>
-                        </div>
-                        <input type="text" class="form-control" placeholder="max MSRP">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="livebox">
                 <button class="btn btn-outline-success" type="button" onclick="doSearch()" id="search-button">Search</button>
                   
               </form>
@@ -150,16 +59,10 @@
     <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">Walmart Search UI</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
       </div>
 
       <div class="container-fluid d-flex flex-row-reverse">
         <a class="navbar-brand" href="https://github.com/Anthonyive/DSCI-551-Project.git">Spring 2021 - DSCI 551 Project</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
       </div>
     </nav>
     <!-- Bootstrap script -->
@@ -198,37 +101,137 @@
     <script src="{{ url_for('static', filename='popper/popper.min.js' ) }}" ></script>
   <!-- Bootstrap script -->
     <script src="{{ url_for('static', filename='bootstrap5/js/bootstrap.min.js') }}" ></script>
-  {% raw %}
-  <script id="results-template" type="text/x-handlebars-template">
-    <div class="container">
-      <div class="row">
 
-        <!-- product cards -->
-        <div class="col">
-          <div class="container p-4">
-            <div class="row">
-                {{#each items}}
-                <div class="col-md-3 mb-3">
-                    <div class="card">
-                        <a href="{{ productUrl }}"><img src="{{ largeImage }}" alt="" class="card-img-top"></a>
-                        <div class="card-body">
-                            <h4><a href="{{ productUrl }}">{{ truncate name 35 }}</a></h4>
-                            <p>{{ truncate shortDescription 128 }}</p>
-                            <p><a href="{{ productUrl }}" class="btn btn-primary">View This Product</a></p>
-                        </div>
-                    </div>
-                    <div class="placeHolder"></div>
+    <script>
+      Handlebars.registerHelper("_toFloat", function(rating_str){
+        return parseFloat(rating_str).toFixed(1);
+      });
+      Handlebars.registerHelper("stars", function(rating_str) {
+          var html = '';
+          var rating = parseFloat(rating_str)
+          var n_solid_star = Math.floor(rating)
+          var n_half_star = Math.round(rating) - n_solid_star
+          var n_empty_star = 5 - n_solid_star - n_half_star
+          for(var i = 0; i < n_solid_star; ++i)
+            html += "<i class='fas fa-star'></i>";
+          for(var i = 0; i < n_half_star; ++i)
+            html += "<i class='fas fa-star-half-alt'></i>";
+          for(var i = 0; i < n_empty_star; ++i)
+            html += "<i class='far fa-star'></i>";
+          return new Handlebars.SafeString(html);
+      });
+    </script>
+  {% raw %}
+    <script id="results-template" type="text/x-handlebars-template">
+      <div class="container">
+        <div class="row">
+
+          <!-- product cards -->
+          {{#each items}}
+          <div class="col-md-12 col-md-offset-5">
+              <!-- <div class="card">
+                <div class="card-header border-0">
+                  <img src="{{ largeImage }}" alt="" class="card-img-top">
                 </div>
-                {{/each}}
-            </div>
+                  {{attributes.productUrlText}}
+                  <div class="card-body">
+                      <h6><a href="https://www.walmart.com{{attributes.productUrlText}}">{{ truncate name 35 }}</a></h6>
+                      <p>{{ truncate shortDescription 128 }}</p>
+                      <p><a href="https://www.walmart.com{{attributes.productUrlText}}" class="btn btn-primary">View This Product</a></p>
+                  </div>
+              </div> -->
+              <div class="card-horizontal">
+                <div class="img-square-wrapper">
+                  <img height="200" src="{{ largeImage }}" alt="Card image cap">
+                  <!-- <img class="" src="http://via.placeholder.com/300x180" alt="Card image cap"> -->
+                </div>
+                <div class="card-body">
+                  <!-- title -->
+                  <h5 class="card-title">
+                    {{#if attributes.productUrlText}}
+                      <a href="https://www.walmart.com{{attributes.productUrlText}}">
+                        {{ name }}
+                      </a>
+                    {{else}}
+                      {{ name }}
+                    {{/if}}
+                  </h5>
+
+                  <!-- star rating -->
+                  {{#if customerRating}}
+                    <span style="color: gold;">
+                      {{stars customerRating}}
+                    </span> ({{_toFloat customerRating}} out of 5) [{{numReviews}} reviews]
+                  {{else}}
+                    No star ratings
+                  {{/if}}
+
+                  <!-- brand name -->
+                  {{#if brandName}}
+                  <p class="text-muted">
+                    <i>Brand name</i>: {{brandName}}
+                  </p>
+                  {{/if}}
+
+                  <!-- description -->
+                  <p class="card-text">{{ truncate shortDescription 256 }}</p>
+
+                  <!-- price -->
+                  {{#if msrp}}
+                    <h4>
+                      <sup>$</sup>{{salePrice}}
+                      <span style="font-size: 15px;" class="text-muted">
+                        <strike>
+                          ${{msrp}}
+                        </strike>
+                      </span>
+                    </h4>
+                  {{else}}
+                    <h4>
+                      <sup>$</sup>{{salePrice}}
+                    </h4>
+                  {{/if}}
+
+                  <!-- shipping -->
+                  {{#if ninetySevenCentShipping}}
+                    <p style="margin: 2px 0;">
+                      <i class="fas fa-shipping-fast"></i> {{98 shipping available}}
+                    </p>
+                  {{/if}}
+
+                  {{#if standardShipRate}}
+                    <p style="margin: 2px 0;">
+                      <span style="color: tomato;"><i class="fas fa-dolly"></i></span> Standard ship rate: <sup>$</sup>{{standardShipRate}}
+                    </p>
+                  {{/if}}
+
+                  {{#if twoThreeDayShippingRate}}
+                    <p style="margin: 2px 0;">
+                      <span style="color: dodgerblue;"><i class="fas fa-truck"></i></span> Two or three day shipping rate: <sup>$</sup>{{twoThreeDayShippingRate}}
+                    </p>
+                  {{/if}}
+
+                  <!-- button -->
+                  {{#if attributes.productUrlText}}
+                    <a href="https://www.walmart.com{{attributes.productUrlText}}" class="btn btn-primary">
+                      View product on Walmart.com <i class="fas fa-external-link-alt"></i>
+                    </a>
+                  {{else}}
+                    <button type="button" class="btn btn-primary" disabled>
+                      Walmart link not available <i class="fas fa-unlink"></i>
+                    </button>
+                  {{/if}}
+
+                  
+                </div>
+              </div>
+              <div class="placeHolder"></div>
           </div>
+          {{/each}}
         </div>
       </div>
-    </div>
-    
-    
-</script>
-{% endraw %}
+    </script>
+  {% endraw %}
   <!-- for livesearch functionality -->
   <script>
       Handlebars.registerHelper ('truncate', function (str, len) {
@@ -261,15 +264,6 @@
             data: {
                 keyword: keyword,
                 kind: kind,
-                ninetySevenCentShipping: ninetySevenCentShipping,
-                marketplace: marketplace,
-                shipToStore: shipToStore,
-                freeShipToStore: freeShipToStore,
-                bundle: bundle,
-                clearance: clearance,
-                preOrder: preOrder,
-                freeShippingOver35Dollars: freeShippingOver35Dollars,
-                availableOnline: availableOnline,
             },
             type: 'post',
             success: function ( res ){
