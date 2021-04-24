@@ -60,32 +60,36 @@
     <main class="container">
       <div class="bg-light p-5 rounded mt-3">
         <h3>Filtering Options</h3>
+
+        <hr>
         <form action="\search" method="POST" class="form-check">
           <div class="form-check">
-            <input class="filterCheckboxes form-check-input" type="checkbox" value="ninetySevenCentShipping" name="filterCheckboxes" id="ninetySevenCentShipping">
-            <label for="ninetySevenCentShipping" class="form-check-label">97&#162; Shipping</label>
+            <input class="filterCheckboxes form-check-input" type="checkbox" value="ninetySevenCentShipping" name="filterCheckboxes">
+            <label for="ninetySevenCentShipping" class="form-check-label" id="ninetySevenCentShipping">97&#162; Shipping</label>
           </div>
           <div class="form-check">
-            <input class="filterCheckboxes form-check-input" type="checkbox" value="marketplace" name="filterCheckboxes" id="marketplace">
-            <label for="marketplace" class="form-check-label">Marketplace</label>
+            <input class="filterCheckboxes form-check-input" type="checkbox" value="marketplace" name="filterCheckboxes">
+            <label for="marketplace" class="form-check-label" id="marketplace">Marketplace</label>
           </div>
           <div class="form-check">
-            <input class="filterCheckboxes form-check-input" type="checkbox" value="shipToStore" name="filterCheckboxes" id="shipToStore">
-            <label for="shipToStore" class="form-check-label">Ship to store</label>
+            <input class="filterCheckboxes form-check-input" type="checkbox" value="shipToStore" name="filterCheckboxes">
+            <label for="shipToStore" class="form-check-label" id="shipToStore">Ship to store</label>
           </div>
           <div class="form-check">
-            <input class="filterCheckboxes form-check-input" type="checkbox" value="bundle" name="filterCheckboxes" id="bundle">
-            <label for="bundle" class="form-check-label">Bundle</label>
+            <input class="filterCheckboxes form-check-input" type="checkbox" value="bundle" name="filterCheckboxes">
+            <label for="bundle" class="form-check-label" id="bundle">Bundle</label>
           </div>
           <div class="form-check">
-            <input class="filterCheckboxes form-check-input" type="checkbox" value="clearance" name="filterCheckboxes" id="clearance">
-            <label for="clearance" class="form-check-label">Clearance</label>
+            <input class="filterCheckboxes form-check-input" type="checkbox" value="clearance" name="filterCheckboxes">
+            <label for="clearance" class="form-check-label" id="clearance">Clearance</label>
           </div>
           <div class="form-check">
-            <input class="filterCheckboxes form-check-input" type="checkbox" value="freeShippingOver35Dollars" name="filterCheckboxes" id="freeShippingOver35Dollars">
-            <label for="freeShippingOver35Dollars" class="form-check-label">FreeShipping over 35 dollars</label>
+            <input class="filterCheckboxes form-check-input" type="checkbox" value="freeShippingOver35Dollars" name="filterCheckboxes">
+            <label for="freeShippingOver35Dollars" class="form-check-label" id="freeShippingOver35Dollars">FreeShipping over 35 dollars</label>
           </div>
         </form>
+        <br>
+
         <button class="btn btn-outline-success" type="button" onclick="doSearch()" id="search-button">Search</button>
       </div>
     </main>
@@ -299,6 +303,13 @@
 
       let resultsDisplayArea =  document.getElementById('search-results');
 
+      let ninetySevenCentShippingArea = document.getElementById("ninetySevenCentShipping");
+      let marketplaceArea = document.getElementById("marketplace");
+      let shipToStoreArea = document.getElementById("shipToStore");
+      let bundleArea = document.getElementById("bundle");
+      let clearanceArea = document.getElementById("clearance");
+      let freeShippingOver35DollarsArea = document.getElementById("freeShippingOver35Dollars");
+
       function doSearch(){
         resultsDisplayArea.innerHTML = ''
         let keyword = searchKeywordsInput.value;
@@ -321,8 +332,15 @@
             type: 'post',
             success: function ( res ){
                 console.log(res)
+                console.log(res.filterItemsCounts.freeShippingOver35Dollars)
                 if (res.items.length > 0) {
                     resultsDisplayArea.innerHTML = resultsTemplate(res)
+                    ninetySevenCentShippingArea.innerHTML = "97&#162; Shipping (" + res.filterItemsCounts.ninetySevenCentShipping + ")"
+                    marketplaceArea.innerHTML = "Marketplace (" + res.filterItemsCounts.marketplace + ")"
+                    shipToStoreArea.innerHTML = "Ship to store (" + res.filterItemsCounts.shipToStore + ")"
+                    bundleArea.innerHTML = "Bundle (" + res.filterItemsCounts.bundle + ")"
+                    clearanceArea.innerHTML = "Clearance (" + res.filterItemsCounts.clearance + ")"
+                    freeShippingOver35DollarsArea.innerHTML = "FreeShipping over 35 dollars (" + res.filterItemsCounts.freeShippingOver35Dollars + ")"
                 } else {
                     resultsDisplayArea.innerHTML = `<p class="text-center">No Result For the Search<p>`
                 }

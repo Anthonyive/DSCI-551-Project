@@ -40,8 +40,29 @@ def search(filter=False):
     )
     print(dict.fromkeys(filterCheckboxes, {"$eq": True}))
     data = dumps(result)
+
+    # filter items count
+    filterItems = ["ninetySevenCentShipping", "marketplace", "shipToStore", "bundle", "clearance", "freeShippingOver35Dollars"]
+    filterItemsCounts = {'filterItemsCounts': dict()}
+    for item in filterItems:
+        result = mongo.db.products.aggregate(
+            [ 
+                { "$match": { "$text": {"$search": query} }},
+                { "$match": {item: True}},
+                { "$count": item }
+            ]
+        )
+        pyResult = next(iter(list(result)), {item: 0})
         
-    return jsonify(items=json.loads(data))
+        filterItemsCounts['filterItemsCounts'][item] = pyResult[item]
+        # filterItemsCounts[item] = dict(result)['c']
+    
+    for k,v in filterItemsCounts['filterItemsCounts'].items():
+        filterItemsCounts[k] = str(v)
+    print(filterItemsCounts)
+    print(type(json.loads(data)))
+        
+    return jsonify(items=json.loads(data), filterItemsCounts=filterItemsCounts)
 
 if __name__ == '__main__':
     app.run(debug=True)
