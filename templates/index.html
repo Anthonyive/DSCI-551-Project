@@ -27,9 +27,9 @@
         <p class="lead">Type in a Walmart product and see if it's in our database.</p>
 
         <p>
-          Due to storage and indexing constraints, the database uses the first 6000 pages on <a href="https://www.walmart.com">Walmart.com</a>. Then, we used Spark to filter out not in stock and not available online products beforehand. 
+          Due to storage and indexing constraints, the database uses 6000 paginated pages from <a href="https://www.walmart.io/docs/affiliate/introduction">Walmart Affiliate API</a>. Then, we used Spark to filter out not in stock and not available online products beforehand. 
         </p>
-        <p>There are currently <mark>{{ docCount }}</mark> products with <mark>{{ catCount }}</mark> distinct categories in our database.</p>
+        <p>There are currently <mark>{{ docCount }}</mark> products with <mark>{{ catCount }}</mark> distinct categories in our database. Each product has an average of <mark>{{avgReviewCount}}</mark> reviews. All products are available online and in stock.</p>
 
         <div class="container">
           <div class="row">

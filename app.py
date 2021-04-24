@@ -22,7 +22,14 @@ def index():
                         }])
     catCount = [i.get('count') for i in catCount][0]
 
-    return render_template('index.html', docCount=docCount, catCount=catCount)
+    avgReviewCount = mongo.db.products.aggregate([
+        {"$group": {"_id": None, "reviewAvg": {"$avg": "$numReviews"}}}
+    ])
+
+    avgReviewCount = list(avgReviewCount)[0]['reviewAvg']
+    avgReviewCount = round(avgReviewCount, 1)
+
+    return render_template('index.html', docCount=docCount, catCount=catCount, avgReviewCount=avgReviewCount)
 
 @app.route('/search', methods=["POST", "GET"])
 def search(filter=False):
