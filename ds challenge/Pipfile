@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 pandas = "*"
 ipykernel = "*"
+sqlalchemy = "*"
+mysqlclient = "*"
 
 [dev-packages]
 
