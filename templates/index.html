@@ -62,6 +62,13 @@
 
     <main class="container">
       <div class="bg-light p-5 rounded mt-3">
+        <h4>Top categories</h4>
+        <hr>
+
+        <div id="topCat-results"><p> Please search a query first. </p></div>
+
+        <br>
+
         <h4>Filtering Options</h4>
 
         <hr>
@@ -132,6 +139,29 @@
           return new Handlebars.SafeString(html);
       });
     </script>
+
+{% raw %}
+    <script id="topCat-template" type="text/x-handlebars-template">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Category</th>
+            <th scope="col">Counts</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each topCat}}
+          <tr>
+            <td>{{category}}</td>
+            <td>{{count}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </script>
+{% endraw %}
+
+
   {% raw %}
     <script id="results-template" type="text/x-handlebars-template">
       <div class="container">
@@ -261,12 +291,16 @@
       });
 
       let resultsRaw = document.getElementById("results-template").innerHTML;
+      let topCatRaw = document.getElementById("topCat-template").innerHTML;
       let resultsTemplate = Handlebars.compile(resultsRaw);
+      let topCatTemplate = Handlebars.compile(topCatRaw);
 
       let searchKeywordsInput = document.getElementById('livebox');
       // let kindSelect = document.getElementById('kind');
 
       let resultsDisplayArea =  document.getElementById('search-results');
+
+      let topCatDisplayArea =  document.getElementById('topCat-results');
 
       let ninetySevenCentShippingArea = document.getElementById("ninetySevenCentShipping");
       let marketplaceArea = document.getElementById("marketplace");
@@ -277,6 +311,7 @@
 
       function doSearch(){
         resultsDisplayArea.innerHTML = ''
+        topCatDisplayArea.innerHTML = ''
         let keyword = searchKeywordsInput.value;
         var checkboxes = document.getElementsByName('filterCheckboxes');
         var filterCheckboxes = new Array();
@@ -297,9 +332,10 @@
             type: 'post',
             success: function ( res ){
                 console.log(res)
-                console.log(res.filterItemsCounts.freeShippingOver35Dollars)
+                console.log(res.topCat)
                 if (res.items.length > 0) {
                     resultsDisplayArea.innerHTML = resultsTemplate(res)
+                    topCatDisplayArea.innerHTML = topCatTemplate(res)
                     ninetySevenCentShippingArea.innerHTML = "97&#162; Shipping (" + res.filterItemsCounts.ninetySevenCentShipping + ")"
                     marketplaceArea.innerHTML = "Marketplace (" + res.filterItemsCounts.marketplace + ")"
                     shipToStoreArea.innerHTML = "Ship to store (" + res.filterItemsCounts.shipToStore + ")"

@@ -87,8 +87,30 @@ def search(filter=False):
         filterItemsCounts[k] = str(v)
     print(filterItemsCounts)
     print(type(json.loads(data)))
+
+    topCategories = mongo.db.products.aggregate([
+        { "$match": { "$text": {"$search": query} }},
+        { "$project": { "category" : { "$split": [ "$categoryPath" , "/" ] } } }, 
+        { "$group"  : { "_id" : { "category" : "$category" }, "catCount" : { "$sum": 1 } } }, 
+        { "$sort"   : { "catCount": -1 } }, 
+        { "$limit"  : 10 }
+    ])
+
+    topCat = []
+
+    for cat in topCategories:
+        catList = cat['_id']['category']
+        if len(catList) > 4:
+            catString = '/'.join(catList[1:3]) + "/.../" + "/".join(catList[-2:])
+        elif len(catList) < 2:
+            catString = next(iter(catList))
+        else: 
+            catString = "/".join(catList[1:])
+        topCat.append({'category': catString, 'count': str(cat['catCount'])})
+
+    print(topCat)
         
-    return jsonify(items=json.loads(data), filterItemsCounts=filterItemsCounts)
+    return jsonify(items=json.loads(data), filterItemsCounts=filterItemsCounts, topCat=topCat)
 
 if __name__ == '__main__':
     app.run(debug=True)
