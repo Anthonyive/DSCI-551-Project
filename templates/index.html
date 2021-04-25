@@ -1,14 +1,23 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>Walmart Search UI</title>
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+      crossorigin="anonymous"
+    />
     <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
     <style>
-      .placeHolder{
+      .placeHolder {
         display: block;
         height: 5px;
       }
@@ -16,30 +25,61 @@
         margin: 5px 0;
       }
     </style>
-    <link rel="stylesheet" href="{{ url_for('static', filename="css/main.css") }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename="css/main.css")
+    }}">
     <!-- font awesome -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"
+      integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk"
+      crossorigin="anonymous"
+    />
     <!-- jquery ui -->
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+    <link
+      rel="stylesheet"
+      href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+    />
+    <script
+      src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+      integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
     <main class="container">
       <div class="bg-light p-5 rounded mt-3">
         <h1>Search a Product in our Database</h1>
-        <p class="lead">Type in a Walmart product and see if it's in our database.</p>
+        <p class="lead">
+          Type in a Walmart product and see if it's in our database.
+        </p>
 
         <p>
-          Due to storage and indexing constraints, the database uses 6000 paginated pages from <a href="https://www.walmart.io/docs/affiliate/introduction">Walmart Affiliate API</a>. Then, we used Spark to filter out not in stock and not available online products beforehand. 
+          Due to storage and indexing constraints, the database uses 6000
+          paginated pages from
+          <a href="https://www.walmart.io/docs/affiliate/introduction"
+            >Walmart Affiliate API</a
+          >. Then, we used Spark to filter out not in stock and not available
+          online products beforehand.
         </p>
-        <p>There are currently <mark>{{ docCount }}</mark> products with <mark>{{ catCount }}</mark> distinct categories in our database. Each product has an average of <mark>{{avgReviewCount}}</mark> reviews. All products are available online and in stock.</p>
+        <p>
+          There are currently <mark>{{ docCount }}</mark> products with
+          <mark>{{ catCount }}</mark> distinct categories in our database. Each
+          product has an average of <mark>{{avgReviewCount}}</mark> reviews. All
+          products are available online and in stock.
+        </p>
 
         <div class="container">
           <div class="row">
             <!-- Search bar -->
             <div class="container-fluid col-md">
               <form method="POST" action="\search" class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="livebox">
+                <input
+                  class="form-control me-2"
+                  type="search"
+                  placeholder="Search"
+                  aria-label="Search"
+                  id="livebox"
+                />
               </form>
 
               <!-- <form action="\search" method="POST">
@@ -47,14 +87,9 @@
                 Marketplace <input type="checkbox" value="marketplace" name="filterCheckboxes" id="marketplace">
                 Ship to store <input type="checkbox" value="shipToStore" name="filterCheckboxes" id="shipToStore">
               </form> -->
-
-              
             </div>
-
           </div>
         </div>
-        
-        
       </div>
     </main>
 
@@ -63,38 +98,46 @@
     <main class="container">
       <div class="bg-light p-5 rounded mt-3">
         <h4>Top categories</h4>
-        <hr>
+        <hr />
 
-        <div id="topCat-results"><p> Please search a query first. </p></div>
+        <div id="topCat-results"><p>Please search a query first.</p></div>
 
-        <br>
+        <br />
 
         <h4>Filtering Options</h4>
 
-        <hr>
+        <hr />
         <form action="\search" method="POST" class="form-check">
-
-          {% set i=0 %}
-          {% for key,value in filterItemsIndexCounts.items() %}
+          {% set i=0 %} {% for key,value in filterItemsIndexCounts.items() %}
           <div class="form-check">
-            <input class="filterCheckboxes form-check-input" type="checkbox" value="{{key}}" name="filterCheckboxes">
-            <label for="{{key}}" class="form-check-label" id="{{key}}">{{filterItemsHRNames[loop.index0] | safe}} ({{value}})</label>
+            <input
+              class="filterCheckboxes form-check-input"
+              type="checkbox"
+              value="{{key}}"
+              name="filterCheckboxes"
+            />
+            <label for="{{key}}" class="form-check-label" id="{{key}}"
+              >{{filterItemsHRNames[loop.index0] | safe}} ({{value}})</label
+            >
           </div>
-          {% set i = i+1 %}
-          {% endfor %}
+          {% set i = i+1 %} {% endfor %}
         </form>
-        <br>
+        <br />
 
-        <button class="btn btn-outline-success" type="button" onclick="doSearch()" id="search-button">Search</button>
+        <button
+          class="btn btn-outline-success"
+          type="button"
+          onclick="doSearch()"
+          id="search-button"
+        >
+          Search
+        </button>
       </div>
     </main>
 
     <div id="search-results"></div>
 
-    
-
     <!-- main body -->
-
 
     <!-- Bottom navbar -->
     <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark">
@@ -103,75 +146,85 @@
       </div>
 
       <div class="container-fluid d-flex flex-row-reverse">
-        <a class="navbar-brand" href="https://github.com/Anthonyive/DSCI-551-Project.git">Spring 2021 - DSCI 551 Project</a>
+        <a
+          class="navbar-brand"
+          href="https://github.com/Anthonyive/DSCI-551-Project.git"
+          >Spring 2021 - DSCI 551 Project</a
+        >
       </div>
     </nav>
     <!-- Bootstrap script -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
-    
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+      crossorigin="anonymous"
+    ></script>
   </body>
 
   <!-- Handlebars js -->
-  <script src="{{ url_for('static', filename='handlebars/handlebars.min.js' ) }}" ></script>
+  <script src="{{ url_for('static', filename='handlebars/handlebars.min.js' ) }}"></script>
   <!-- jQuery -->
-    <script src="{{ url_for('static', filename='jquery/jquery.min.js' ) }}" ></script>
+  <script src="{{ url_for('static', filename='jquery/jquery.min.js' ) }}"></script>
   <!-- POPPER -->
-    <script src="{{ url_for('static', filename='popper/popper.min.js' ) }}" ></script>
+  <script src="{{ url_for('static', filename='popper/popper.min.js' ) }}"></script>
   <!-- Bootstrap script -->
-    <script src="{{ url_for('static', filename='bootstrap5/js/bootstrap.min.js') }}" ></script>
+  <script src="{{ url_for('static', filename='bootstrap5/js/bootstrap.min.js') }}"></script>
 
-    <script>
-      Handlebars.registerHelper("_toFloat", function(rating_str){
-        return parseFloat(rating_str).toFixed(1);
-      });
-      Handlebars.registerHelper("stars", function(rating_str) {
-          var html = '';
-          var rating = parseFloat(rating_str)
-          var n_solid_star = Math.floor(rating)
-          var n_half_star = Math.round(rating) - n_solid_star
-          var n_empty_star = 5 - n_solid_star - n_half_star
-          for(var i = 0; i < n_solid_star; ++i)
-            html += "<i class='fas fa-star'></i>";
-          for(var i = 0; i < n_half_star; ++i)
-            html += "<i class='fas fa-star-half-alt'></i>";
-          for(var i = 0; i < n_empty_star; ++i)
-            html += "<i class='far fa-star'></i>";
-          return new Handlebars.SafeString(html);
-      });
-    </script>
-
-{% raw %}
-    <script id="topCat-template" type="text/x-handlebars-template">
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">Category</th>
-            <th scope="col">Counts</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#each topCat}}
-          <tr>
-            <td>{{category}}</td>
-            <td>{{count}}</td>
-          </tr>
-          {{/each}}
-        </tbody>
-      </table>
-    </script>
-{% endraw %}
-
+  <script>
+    Handlebars.registerHelper("_toFloat", function (rating_str) {
+      return parseFloat(rating_str).toFixed(1);
+    });
+    Handlebars.registerHelper("stars", function (rating_str) {
+      var html = "";
+      var rating = parseFloat(rating_str);
+      var n_solid_star = Math.floor(rating);
+      var n_half_star = Math.round(rating) - n_solid_star;
+      var n_empty_star = 5 - n_solid_star - n_half_star;
+      for (var i = 0; i < n_solid_star; ++i)
+        html += "<i class='fas fa-star'></i>";
+      for (var i = 0; i < n_half_star; ++i)
+        html += "<i class='fas fa-star-half-alt'></i>";
+      for (var i = 0; i < n_empty_star; ++i)
+        html += "<i class='far fa-star'></i>";
+      return new Handlebars.SafeString(html);
+    });
+  </script>
 
   {% raw %}
-    <script id="results-template" type="text/x-handlebars-template">
-      <div class="container">
-        <div class="row">
-
-
-          <!-- product cards -->
-          {{#each items}}
+  <script id="topCat-template" type="text/x-handlebars-template">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">
+            Category
+          </th>
+          <th scope="col">
+            Counts
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each topCat}}
+          <tr>
+            <td>
+              {{category}}
+            </td>
+            <td>
+              {{count}}
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </script>
+  {% endraw %} {% raw %}
+  <script id="results-template" type="text/x-handlebars-template">
+    <div class="container">
+      <div class="row">
+        <!-- product cards -->
+        {{#each items}}
           <div class="col-md-12 col-md-offset-5">
-              <!-- <div class="card">
+            <!-- <div class="card">
                 <div class="card-header border-0">
                   <img src="{{ largeImage }}" alt="" class="card-img-top">
                 </div>
@@ -182,174 +235,219 @@
                       <p><a href="https://www.walmart.com{{attributes.productUrlText}}" class="btn btn-primary">View This Product</a></p>
                   </div>
               </div> -->
-              <div class="card-horizontal">
-                <div class="img-square-wrapper">
-                  <img height="200" src="{{ largeImage }}" alt="Card image cap" style="margin: 30px auto 20px; display: block;">
-                  <!-- <img class="" src="http://via.placeholder.com/300x180" alt="Card image cap"> -->
-                </div>
-                <div class="card-body">
-                  <!-- brand name -->
-                  {{#if brandName}}
+            <div class="card-horizontal">
+              <div class="img-square-wrapper">
+                <img
+                  height="200"
+                  src="{{largeImage}}"
+                  alt="Card image cap"
+                  style="margin: 30px auto 20px; display: block;"
+                />
+                <!-- <img class="" src="http://via.placeholder.com/300x180" alt="Card image cap"> -->
+              </div>
+              <div class="card-body">
+                <!-- brand name -->
+                {{#if brandName}}
                   <p class="text-muted">
                     {{brandName}}
                   </p>
-                  {{/if}}
+                {{/if}}
 
-                  <!-- title -->
-                  <h5 class="card-title">
-                    {{#if attributes.productUrlText}}
-                      <a href="https://www.walmart.com{{attributes.productUrlText}}">
-                        {{ name }}
-                      </a>
-                    {{else}}
-                      {{ name }}
-                    {{/if}}
-                  </h5>
-
-                  <!-- star rating -->
-                  {{#if customerRating}}
-                    <span style="color: gold;">
-                      {{stars customerRating}}
-                    </span> ({{_toFloat customerRating}} out of 5) [{{numReviews}} reviews]
-                  {{else}}
-                    No star ratings
-                  {{/if}}
-
-                  <!-- description -->
-                  {{#if shortDescription}}
-                    <p class="card-text">{{ truncate shortDescription 256 }}</p>
-                  {{/if}}
-
-                  <!-- price -->
-                  {{#if msrp}}
-                    <h4>
-                      <sup>$</sup>{{salePrice}}
-                      <span style="font-size: 15px;" class="text-muted">
-                        <strike>
-                          ${{msrp}}
-                        </strike>
-                      </span>
-                    </h4>
-                  {{else}}
-                    <h4>
-                      <sup>$</sup>{{salePrice}}
-                    </h4>
-                  {{/if}}
-
-                  <!-- shipping -->
-                  {{#if ninetySevenCentShipping}}
-                    <p style="margin: 2px 0;">
-                      <i class="fas fa-shipping-fast"></i> {{98 shipping available}}
-                    </p>
-                  {{/if}}
-
-                  {{#if standardShipRate}}
-                    <p style="margin: 2px 0;">
-                      <span style="color: tomato;"><i class="fas fa-dolly"></i></span> Standard ship rate: <sup>$</sup>{{standardShipRate}}
-                    </p>
-                  {{/if}}
-
-                  {{#if twoThreeDayShippingRate}}
-                    <p style="margin: 2px 0;">
-                      <span style="color: dodgerblue;"><i class="fas fa-truck"></i></span> Two or three day shipping rate: <sup>$</sup>{{twoThreeDayShippingRate}}
-                    </p>
-                  {{/if}}
-
-                  <!-- button -->
+                <!-- title -->
+                <h5 class="card-title">
                   {{#if attributes.productUrlText}}
-                    <a href="https://www.walmart.com{{attributes.productUrlText}}" class="btn btn-primary">
-                      View product on Walmart.com <i class="fas fa-external-link-alt"></i>
+                    <a
+                      href="https://www.walmart.com{{
+                        attributes.productUrlText
+                      }}"
+                    >
+                      {{name}}
                     </a>
                   {{else}}
-                    <button type="button" class="btn btn-primary" disabled>
-                      Walmart link not available <i class="fas fa-unlink"></i>
-                    </button>
+                    {{name}}
                   {{/if}}
+                </h5>
 
-                  
-                </div>
+                <!-- star rating -->
+                {{#if customerRating}}
+                  <span style="color: gold;">
+                    {{stars customerRating}}
+                  </span>
+                  ({{_toFloat customerRating}} out of 5) [{{numReviews
+                  }} reviews]
+                {{else}}
+                  No star ratings
+                {{/if}}
+
+                <!-- description -->
+                {{#if shortDescription}}
+                  <p class="card-text">
+                    {{truncate shortDescription 256}}
+                  </p>
+                {{/if}}
+
+                <!-- price -->
+                {{#if msrp}}
+                  <h4>
+                    <sup>
+                      $
+                    </sup>{{salePrice}}
+                    <span style="font-size: 15px;" class="text-muted">
+                      <strike>
+                        ${{msrp}}
+                      </strike>
+                    </span>
+                  </h4>
+                {{else}}
+                  <h4>
+                    <sup>
+                      $
+                    </sup>{{salePrice}}
+                  </h4>
+                {{/if}}
+
+                <!-- shipping -->
+                {{#if ninetySevenCentShipping}}
+                  <p style="margin: 2px 0;">
+                    <i class="fas fa-shipping-fast"></i>
+                    {{98}}
+                  </p>
+                {{/if}}
+
+                {{#if standardShipRate}}
+                  <p style="margin: 2px 0;">
+                    <span style="color: tomato;">
+                      <i class="fas fa-dolly"></i>
+                    </span>
+                    Standard ship rate:
+                    <sup>
+                      $
+                    </sup>{{standardShipRate}}
+                  </p>
+                {{/if}}
+
+                {{#if twoThreeDayShippingRate}}
+                  <p style="margin: 2px 0;">
+                    <span style="color: dodgerblue;">
+                      <i class="fas fa-truck"></i>
+                    </span>
+                    Two or three day shipping rate:
+                    <sup>
+                      $
+                    </sup>{{twoThreeDayShippingRate}}
+                  </p>
+                {{/if}}
+
+                <!-- button -->
+                {{#if attributes.productUrlText}}
+                  <a
+                    href="https://www.walmart.com{{attributes.productUrlText}}"
+                    class="btn btn-primary"
+                  >
+                    View product on Walmart.com
+                    <i class="fas fa-external-link-alt"></i>
+                  </a>
+                {{else}}
+                  <button type="button" class="btn btn-primary" disabled>
+                    Walmart link not available
+                    <i class="fas fa-unlink"></i>
+                  </button>
+                {{/if}}
               </div>
-              <div class="placeHolder"></div>
+            </div>
+            <div class="placeHolder"></div>
           </div>
-          {{/each}}
-        </div>
+        {{/each}}
       </div>
-    </script>
+    </div>
+  </script>
   {% endraw %}
   <!-- for search functionality -->
   <script>
-      Handlebars.registerHelper ('truncate', function (str, len) {
-        if (undefined !== str && str.length > len && str.length > 0) {
-            let new_str = str + " ";
-            new_str = str.substr (0, len);
-            new_str = str.substr (0, new_str.lastIndexOf(" "));
-            new_str = (new_str.length > 0) ? new_str : str.substr (0, len);
+    Handlebars.registerHelper("truncate", function (str, len) {
+      if (undefined !== str && str.length > len && str.length > 0) {
+        let new_str = str + " ";
+        new_str = str.substr(0, len);
+        new_str = str.substr(0, new_str.lastIndexOf(" "));
+        new_str = new_str.length > 0 ? new_str : str.substr(0, len);
 
-            return new Handlebars.SafeString ( new_str +'...' );
-        }
-        return str;
-      });
-
-      let resultsRaw = document.getElementById("results-template").innerHTML;
-      let topCatRaw = document.getElementById("topCat-template").innerHTML;
-      let resultsTemplate = Handlebars.compile(resultsRaw);
-      let topCatTemplate = Handlebars.compile(topCatRaw);
-
-      let searchKeywordsInput = document.getElementById('livebox');
-      // let kindSelect = document.getElementById('kind');
-
-      let resultsDisplayArea =  document.getElementById('search-results');
-
-      let topCatDisplayArea =  document.getElementById('topCat-results');
-
-      let ninetySevenCentShippingArea = document.getElementById("ninetySevenCentShipping");
-      let marketplaceArea = document.getElementById("marketplace");
-      let shipToStoreArea = document.getElementById("shipToStore");
-      let bundleArea = document.getElementById("bundle");
-      let clearanceArea = document.getElementById("clearance");
-      let freeShippingOver35DollarsArea = document.getElementById("freeShippingOver35Dollars");
-
-      function doSearch(){
-        resultsDisplayArea.innerHTML = ''
-        topCatDisplayArea.innerHTML = ''
-        let keyword = searchKeywordsInput.value;
-        var checkboxes = document.getElementsByName('filterCheckboxes');
-        var filterCheckboxes = new Array();
-        for (var i=0, n=checkboxes.length;i<n;i++) 
-        {
-          if (checkboxes[i].checked) 
-          {
-            filterCheckboxes.push(checkboxes[i].value);
-          }
-        }
-        console.log(filterCheckboxes)
-        $.ajax({
-            url: '{{ url_for("search") }}',
-            data: {
-                keyword: keyword,
-                filterCheckboxes: JSON.stringify(filterCheckboxes),
-            },
-            type: 'post',
-            success: function ( res ){
-                console.log(res)
-                console.log(res.topCat)
-                if (res.items.length > 0) {
-                    resultsDisplayArea.innerHTML = resultsTemplate(res)
-                    topCatDisplayArea.innerHTML = topCatTemplate(res)
-                    ninetySevenCentShippingArea.innerHTML = "97&#162; Shipping (" + res.filterItemsCounts.ninetySevenCentShipping + ")"
-                    marketplaceArea.innerHTML = "Marketplace (" + res.filterItemsCounts.marketplace + ")"
-                    shipToStoreArea.innerHTML = "Ship to store (" + res.filterItemsCounts.shipToStore + ")"
-                    bundleArea.innerHTML = "Bundle (" + res.filterItemsCounts.bundle + ")"
-                    clearanceArea.innerHTML = "Clearance (" + res.filterItemsCounts.clearance + ")"
-                    freeShippingOver35DollarsArea.innerHTML = "Free shipping over 35 dollars (" + res.filterItemsCounts.freeShippingOver35Dollars + ")"
-                } else {
-                    resultsDisplayArea.innerHTML = `<p class="text-center">No Result For the Search<p>`
-                }
-            }
-        })
+        return new Handlebars.SafeString(new_str + "...");
       }
+      return str;
+    });
 
-    $(document).ready(function(){
+    let resultsRaw = document.getElementById("results-template").innerHTML;
+    let topCatRaw = document.getElementById("topCat-template").innerHTML;
+    let resultsTemplate = Handlebars.compile(resultsRaw);
+    let topCatTemplate = Handlebars.compile(topCatRaw);
+
+    let searchKeywordsInput = document.getElementById("livebox");
+    // let kindSelect = document.getElementById('kind');
+
+    let resultsDisplayArea = document.getElementById("search-results");
+
+    let topCatDisplayArea = document.getElementById("topCat-results");
+
+    let ninetySevenCentShippingArea = document.getElementById(
+      "ninetySevenCentShipping"
+    );
+    let marketplaceArea = document.getElementById("marketplace");
+    let shipToStoreArea = document.getElementById("shipToStore");
+    let bundleArea = document.getElementById("bundle");
+    let clearanceArea = document.getElementById("clearance");
+    let freeShippingOver35DollarsArea = document.getElementById(
+      "freeShippingOver35Dollars"
+    );
+
+    function doSearch() {
+      resultsDisplayArea.innerHTML = "";
+      topCatDisplayArea.innerHTML = "";
+      let keyword = searchKeywordsInput.value;
+      var checkboxes = document.getElementsByName("filterCheckboxes");
+      var filterCheckboxes = new Array();
+      for (var i = 0, n = checkboxes.length; i < n; i++) {
+        if (checkboxes[i].checked) {
+          filterCheckboxes.push(checkboxes[i].value);
+        }
+      }
+      console.log(filterCheckboxes);
+      $.ajax({
+        url: '{{ url_for("search") }}',
+        data: {
+          keyword: keyword,
+          filterCheckboxes: JSON.stringify(filterCheckboxes),
+        },
+        type: "post",
+        success: function (res) {
+          console.log(res);
+          console.log(res.topCat);
+          if (res.items.length > 0) {
+            resultsDisplayArea.innerHTML = resultsTemplate(res);
+            topCatDisplayArea.innerHTML = topCatTemplate(res);
+            ninetySevenCentShippingArea.innerHTML =
+              "97&#162; Shipping (" +
+              res.filterItemsCounts.ninetySevenCentShipping +
+              ")";
+            marketplaceArea.innerHTML =
+              "Marketplace (" + res.filterItemsCounts.marketplace + ")";
+            shipToStoreArea.innerHTML =
+              "Ship to store (" + res.filterItemsCounts.shipToStore + ")";
+            bundleArea.innerHTML =
+              "Bundle (" + res.filterItemsCounts.bundle + ")";
+            clearanceArea.innerHTML =
+              "Clearance (" + res.filterItemsCounts.clearance + ")";
+            freeShippingOver35DollarsArea.innerHTML =
+              "Free shipping over 35 dollars (" +
+              res.filterItemsCounts.freeShippingOver35Dollars +
+              ")";
+          } else {
+            resultsDisplayArea.innerHTML = `<p class="text-center">No Result For the Search<p>`;
+          }
+        },
+      });
+    }
+
+    $(document).ready(function () {
       /*
       $("#livebox").on("input", function(e){
         query = $("#livebox").val();
@@ -369,17 +467,16 @@
         })
       });
       */
-    })
+    });
   </script>
 
   <!-- enter to search -->
   <script>
-    $("form").keypress(function(e){
-        if(e.keyCode == 13) {
-            e.preventDefault();
-            return false;
-        }
-    })
+    $("form").keypress(function (e) {
+      if (e.keyCode == 13) {
+        e.preventDefault();
+        return false;
+      }
+    });
   </script>
-
 </html>
