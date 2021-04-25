@@ -154,7 +154,7 @@
               </div> -->
               <div class="card-horizontal">
                 <div class="img-square-wrapper">
-                  <img height="200" src="{{ largeImage }}" alt="Card image cap">
+                  <img height="200" src="{{ largeImage }}" alt="Card image cap" style="margin: 30px auto 20px; display: block;">
                   <!-- <img class="" src="http://via.placeholder.com/300x180" alt="Card image cap"> -->
                 </div>
                 <div class="card-body">
@@ -305,7 +305,7 @@
                     shipToStoreArea.innerHTML = "Ship to store (" + res.filterItemsCounts.shipToStore + ")"
                     bundleArea.innerHTML = "Bundle (" + res.filterItemsCounts.bundle + ")"
                     clearanceArea.innerHTML = "Clearance (" + res.filterItemsCounts.clearance + ")"
-                    freeShippingOver35DollarsArea.innerHTML = "FreeShipping over 35 dollars (" + res.filterItemsCounts.freeShippingOver35Dollars + ")"
+                    freeShippingOver35DollarsArea.innerHTML = "Free shipping over 35 dollars (" + res.filterItemsCounts.freeShippingOver35Dollars + ")"
                 } else {
                     resultsDisplayArea.innerHTML = `<p class="text-center">No Result For the Search<p>`
                 }

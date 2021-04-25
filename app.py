@@ -31,7 +31,7 @@ def index():
 
     # filter items count
     filterItems = ["ninetySevenCentShipping", "marketplace", "shipToStore", "bundle", "clearance", "freeShippingOver35Dollars"]
-    filterItemsHRNames = ["97&#162; Shipping", "Marketplace", "Ship to store", "Bundle", "Clearance", "Free Shipping over 35 dollars"]
+    filterItemsHRNames = ["97&#162; Shipping", "Marketplace", "Ship to store", "Bundle", "Clearance", "Free shipping over 35 dollars"]
     filterItemsIndexCounts = dict()
     for item in filterItems:
         result = mongo.db.products.aggregate(
