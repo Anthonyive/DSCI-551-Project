@@ -29,7 +29,26 @@ def index():
     avgReviewCount = list(avgReviewCount)[0]['reviewAvg']
     avgReviewCount = round(avgReviewCount, 1)
 
-    return render_template('index.html', docCount=docCount, catCount=catCount, avgReviewCount=avgReviewCount)
+    # filter items count
+    filterItems = ["ninetySevenCentShipping", "marketplace", "shipToStore", "bundle", "clearance", "freeShippingOver35Dollars"]
+    filterItemsHRNames = ["97&#162; Shipping", "Marketplace", "Ship to store", "Bundle", "Clearance", "Free Shipping over 35 dollars"]
+    filterItemsIndexCounts = dict()
+    for item in filterItems:
+        result = mongo.db.products.aggregate(
+            [
+                { "$match": {item: True}},
+                { "$count": item }
+            ]
+        )
+        pyResult = next(iter(list(result)), {item: 0})
+        
+        filterItemsIndexCounts[item] = pyResult[item]
+        # filterItemsCounts[item] = dict(result)['c']
+    
+    for k,v in filterItemsIndexCounts.items():
+        filterItemsIndexCounts[k] = str(v)
+
+    return render_template('index.html', docCount=docCount, catCount=catCount, avgReviewCount=avgReviewCount, filterItemsIndexCounts=filterItemsIndexCounts, filterItemsHRNames=filterItemsHRNames)
 
 @app.route('/search', methods=["POST", "GET"])
 def search(filter=False):

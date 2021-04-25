@@ -12,6 +12,9 @@
         display: block;
         height: 5px;
       }
+      p {
+        margin: 5px 0;
+      }
     </style>
     <link rel="stylesheet" href="{{ url_for('static', filename="css/main.css") }}">
     <!-- font awesome -->
@@ -63,30 +66,15 @@
 
         <hr>
         <form action="\search" method="POST" class="form-check">
+
+          {% set i=0 %}
+          {% for key,value in filterItemsIndexCounts.items() %}
           <div class="form-check">
-            <input class="filterCheckboxes form-check-input" type="checkbox" value="ninetySevenCentShipping" name="filterCheckboxes">
-            <label for="ninetySevenCentShipping" class="form-check-label" id="ninetySevenCentShipping">97&#162; Shipping</label>
+            <input class="filterCheckboxes form-check-input" type="checkbox" value="{{key}}" name="filterCheckboxes">
+            <label for="{{key}}" class="form-check-label" id="{{key}}">{{filterItemsHRNames[loop.index0] | safe}} ({{value}})</label>
           </div>
-          <div class="form-check">
-            <input class="filterCheckboxes form-check-input" type="checkbox" value="marketplace" name="filterCheckboxes">
-            <label for="marketplace" class="form-check-label" id="marketplace">Marketplace</label>
-          </div>
-          <div class="form-check">
-            <input class="filterCheckboxes form-check-input" type="checkbox" value="shipToStore" name="filterCheckboxes">
-            <label for="shipToStore" class="form-check-label" id="shipToStore">Ship to store</label>
-          </div>
-          <div class="form-check">
-            <input class="filterCheckboxes form-check-input" type="checkbox" value="bundle" name="filterCheckboxes">
-            <label for="bundle" class="form-check-label" id="bundle">Bundle</label>
-          </div>
-          <div class="form-check">
-            <input class="filterCheckboxes form-check-input" type="checkbox" value="clearance" name="filterCheckboxes">
-            <label for="clearance" class="form-check-label" id="clearance">Clearance</label>
-          </div>
-          <div class="form-check">
-            <input class="filterCheckboxes form-check-input" type="checkbox" value="freeShippingOver35Dollars" name="filterCheckboxes">
-            <label for="freeShippingOver35Dollars" class="form-check-label" id="freeShippingOver35Dollars">FreeShipping over 35 dollars</label>
-          </div>
+          {% set i = i+1 %}
+          {% endfor %}
         </form>
         <br>
 
@@ -170,6 +158,13 @@
                   <!-- <img class="" src="http://via.placeholder.com/300x180" alt="Card image cap"> -->
                 </div>
                 <div class="card-body">
+                  <!-- brand name -->
+                  {{#if brandName}}
+                  <p class="text-muted">
+                    {{brandName}}
+                  </p>
+                  {{/if}}
+
                   <!-- title -->
                   <h5 class="card-title">
                     {{#if attributes.productUrlText}}
@@ -188,13 +183,6 @@
                     </span> ({{_toFloat customerRating}} out of 5) [{{numReviews}} reviews]
                   {{else}}
                     No star ratings
-                  {{/if}}
-
-                  <!-- brand name -->
-                  {{#if brandName}}
-                  <p class="text-muted">
-                    <i>Brand name</i>: {{brandName}}
-                  </p>
                   {{/if}}
 
                   <!-- description -->
